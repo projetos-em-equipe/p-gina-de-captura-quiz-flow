@@ -225,9 +225,36 @@
     }
     footer a { color: rgba(162, 155, 254, 0.5); text-decoration: none; }
 
-    @media (max-width: 400px) {
-      .features { grid-template-columns: 1fr; }
-      h1 { font-size: 24px; }
+    /* Mobile-first responsive — app-like compact layout */
+    @media (max-width: 600px) {
+      .container { padding: 24px 16px 40px; }
+      .badge { font-size: 10px; padding: 5px 10px; margin-bottom: 16px; letter-spacing: 0.8px; }
+      .app-icon { width: 72px; height: 72px; border-radius: 18px; margin-bottom: 16px; box-shadow: 0 6px 20px rgba(59, 24, 195, 0.3); }
+      h1 { font-size: 22px; margin-bottom: 8px; }
+      .subtitle { font-size: 13px; margin-bottom: 20px; line-height: 1.5; }
+      .features { gap: 8px; margin-bottom: 20px; }
+      .feature { padding: 10px; border-radius: 10px; font-size: 12px; }
+      .feature .emoji { font-size: 16px; }
+      .form-card { padding: 20px 16px; border-radius: 14px; }
+      .form-title { font-size: 16px; margin-bottom: 14px; }
+      .input-group { margin-bottom: 12px; }
+      .input-group label { font-size: 12px; margin-bottom: 4px; }
+      .input-group input { padding: 12px 14px; font-size: 14px; border-radius: 10px; }
+      .input-hint { font-size: 10px; }
+      .btn-submit { padding: 14px; font-size: 15px; border-radius: 10px; }
+      .success-card { padding: 28px 20px; }
+      .success-card .check-icon { width: 52px; height: 52px; font-size: 24px; margin-bottom: 12px; }
+      .success-card h2 { font-size: 18px; }
+      .success-card p { font-size: 13px; }
+      .counter { margin-top: 16px; font-size: 12px; }
+      footer { margin-top: 24px; font-size: 10px; }
+    }
+    @media (max-width: 380px) {
+      .features { grid-template-columns: 1fr; gap: 6px; }
+      h1 { font-size: 20px; }
+      .app-icon { width: 60px; height: 60px; border-radius: 16px; }
+      .subtitle { font-size: 12px; }
+      .form-card { padding: 16px 14px; }
     }
   </style>
 </head>
