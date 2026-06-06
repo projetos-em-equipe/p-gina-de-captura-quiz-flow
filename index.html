@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizFlow — Seja um Testador Beta</title>
+  <meta name="description" content="Ajude a testar o QuizFlow antes do lançamento oficial na Google Play Store.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #3B18C3;
+      --primary-light: #5B3FE0;
+      --accent: #6C5CE7;
+      --glow: #A29BFE;
+      --bg-dark: #0A0A1A;
+      --bg-card: rgba(255, 255, 255, 0.04);
+      --text: #F0F0FF;
+      --text-muted: #9B9BC0;
+      --success: #00D68F;
+      --error: #FF6B6B;
+      --radius: 16px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated background */
+    .bg-effects {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
+    .bg-effects .orb {
+      position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.3;
+      animation: float 8s ease-in-out infinite;
+    }
+    .bg-effects .orb-1 {
+      width: 400px; height: 400px; top: -100px; left: -100px;
+      background: var(--primary);
+    }
+    .bg-effects .orb-2 {
+      width: 300px; height: 300px; bottom: -50px; right: -50px;
+      background: var(--accent); animation-delay: -4s;
+    }
+    .bg-effects .orb-3 {
+      width: 200px; height: 200px; top: 50%; left: 50%;
+      background: var(--glow); opacity: 0.15; animation-delay: -2s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -30px) scale(1.05); }
+    }
+
+    .container {
+      position: relative; z-index: 1;
+      max-width: 480px; margin: 0 auto;
+      padding: 40px 20px 60px;
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 100px;
+      background: rgba(107, 92, 231, 0.15); border: 1px solid rgba(107, 92, 231, 0.3);
+      font-size: 12px; font-weight: 600; color: var(--glow);
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 24px;
+      animation: fadeInDown 0.6s ease;
+    }
+    .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
+
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Icon */
+    .app-icon {
+      width: 100px; height: 100px; border-radius: 24px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 32px rgba(59, 24, 195, 0.4);
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease 0.1s both;
+    }
+    .app-icon svg { width: 56px; height: 56px; }
+
+    h1 {
+      font-size: 28px; font-weight: 800; text-align: center;
+      line-height: 1.2; margin-bottom: 12px;
+      background: linear-gradient(135deg, #fff, var(--glow));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      animation: fadeInUp 0.6s ease 0.2s both;
+    }
+
+    .subtitle {
+      text-align: center; color: var(--text-muted); font-size: 15px;
+      line-height: 1.6; margin-bottom: 32px; max-width: 360px;
+      animation: fadeInUp 0.6s ease 0.3s both;
+    }
+
+    /* Features */
+    .features {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      width: 100%; margin-bottom: 32px;
+      animation: fadeInUp 0.6s ease 0.4s both;
+    }
+    .feature {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px; border-radius: 12px;
+      background: var(--bg-card); border: 1px solid rgba(255,255,255,0.06);
+      font-size: 13px; color: var(--text-muted);
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .feature:hover { border-color: rgba(107, 92, 231, 0.3); background: rgba(107, 92, 231, 0.08); }
+    .feature .emoji { font-size: 18px; }
+
+    /* Form */
+    .form-card {
+      width: 100%; padding: 28px; border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      animation: fadeInUp 0.6s ease 0.5s both;
+    }
+
+    .form-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; text-align: center; }
+
+    .input-group { margin-bottom: 16px; }
+    .input-group label {
+      display: block; font-size: 13px; font-weight: 600;
+      color: var(--text-muted); margin-bottom: 6px;
+    }
+    .input-group input {
+      width: 100%; padding: 14px 16px; border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text); font-size: 15px; font-family: inherit;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      outline: none;
+    }
+    .input-group input::placeholder { color: rgba(155, 155, 192, 0.5); }
+    .input-group input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(107, 92, 231, 0.15);
+    }
+    .input-group input.error { border-color: var(--error); }
+    .input-hint {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 11px; color: var(--text-muted); margin-top: 6px; opacity: 0.7;
+    }
+
+    .btn-submit {
+      width: 100%; padding: 16px; border: none; border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white; font-size: 16px; font-weight: 700;
+      font-family: inherit; cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .btn-submit:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(59, 24, 195, 0.4);
+    }
+    .btn-submit:active:not(:disabled) { transform: translateY(0); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-submit .spinner {
+      display: none; width: 20px; height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin: 0 auto;
+    }
+    .btn-submit.loading .btn-text { display: none; }
+    .btn-submit.loading .spinner { display: block; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Success state */
+    .success-card {
+      display: none; width: 100%; padding: 40px 28px; border-radius: var(--radius);
+      background: rgba(0, 214, 143, 0.06);
+      border: 1px solid rgba(0, 214, 143, 0.2);
+      text-align: center;
+      animation: fadeInUp 0.4s ease;
+    }
+    .success-card .check-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(0, 214, 143, 0.15);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px; font-size: 28px;
+    }
+    .success-card h2 { font-size: 20px; margin-bottom: 8px; color: var(--success); }
+    .success-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+
+    /* Error toast */
+    .toast {
+      display: none; position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%); padding: 12px 20px; border-radius: 12px;
+      background: rgba(255, 107, 107, 0.15); border: 1px solid rgba(255, 107, 107, 0.3);
+      color: var(--error); font-size: 13px; font-weight: 500;
+      z-index: 100; animation: fadeInUp 0.3s ease;
+    }
+
+    /* Counter */
+    .counter {
+      margin-top: 24px; text-align: center; font-size: 13px;
+      color: var(--text-muted); opacity: 0.6;
+      animation: fadeInUp 0.6s ease 0.6s both;
+    }
+    .counter strong { color: var(--glow); }
+
+    /* Footer */
+    footer {
+      margin-top: 40px; text-align: center; font-size: 11px;
+      color: rgba(155, 155, 192, 0.4);
+    }
+    footer a { color: rgba(162, 155, 254, 0.5); text-decoration: none; }
+
+    @media (max-width: 400px) {
+      .features { grid-template-columns: 1fr; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-effects">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="container">
+    <div class="badge"><span class="dot"></span> Teste Beta Aberto</div>
+
+    <div class="app-icon">
+      <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="28" cy="24" r="16" stroke="white" stroke-width="4" fill="none"/>
+        <path d="M24 24 L28 28 L40 16" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="14" cy="10" r="2" fill="rgba(255,255,255,0.6)"/>
+        <circle cx="44" cy="14" r="1.5" fill="rgba(255,255,255,0.4)"/>
+        <line x1="8" y1="20" x2="4" y2="16" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="48" y1="28" x2="52" y2="28" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <h1>Seja um dos primeiros a testar o QuizFlow</h1>
+    <p class="subtitle">
+      Estamos quase lançando na Google Play! Cadastre seu e-mail para receber
+      o link exclusivo de acesso ao teste beta.
+    </p>
+
+    <div class="features">
+      <div class="feature"><span class="emoji">🎯</span> Quiz de concursos</div>
+      <div class="feature"><span class="emoji">⚔️</span> Duelos em tempo real</div>
+      <div class="feature"><span class="emoji">🏆</span> Ranking e conquistas</div>
+      <div class="feature"><span class="emoji">📝</span> Correção de redação IA</div>
+      <div class="feature"><span class="emoji">👥</span> Comunidade</div>
+      <div class="feature"><span class="emoji">🎓</span> Modo foco</div>
+    </div>
+
+    <!-- Form -->
+    <div class="form-card" id="formCard">
+      <div class="form-title">Cadastre-se para o Beta</div>
+      <form id="betaForm" autocomplete="on">
+        <div class="input-group">
+          <label for="name">Seu nome</label>
+          <input type="text" id="name" name="name" placeholder="Ex: João Silva" required>
+        </div>
+        <div class="input-group">
+          <label for="email">E-mail Google (usado na Play Store)</label>
+          <input type="email" id="email" name="email" placeholder="seuemail@gmail.com" required>
+          <div class="input-hint">⚠️ Precisa ser o e-mail logado no celular Android</div>
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <span class="btn-text">Quero testar! 🚀</span>
+          <div class="spinner"></div>
+        </button>
+      </form>
+    </div>
+
+    <!-- Success -->
+    <div class="success-card" id="successCard">
+      <div class="check-icon">✅</div>
+      <h2>Cadastro feito!</h2>
+      <p>Você receberá o link de teste em breve.<br>
+      Fique de olho no seu e-mail <strong id="confirmedEmail"></strong></p>
+    </div>
+
+    <div class="counter" id="counter"></div>
+
+    <footer>
+      <a href="https://sites.google.com/view/quizflow-privacidade" target="_blank">Política de Privacidade</a>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── Supabase config ──
+    const SUPABASE_URL = 'https://knaaccrnyeshrjrpmrfp.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtuYWFjY3JueWVzaHJqcnBtcmZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2OTQwNDYsImV4cCI6MjA5NDI3MDA0Nn0.rSdAcY6Z-y7bTlDl4UiVvsS01h58CXHhic4Fmz38GUo';
+
+    const form = document.getElementById('betaForm');
+    const formCard = document.getElementById('formCard');
+    const successCard = document.getElementById('successCard');
+    const submitBtn = document.getElementById('submitBtn');
+    const toastEl = document.getElementById('toast');
+    const counterEl = document.getElementById('counter');
+
+    // Show toast
+    function showToast(msg, duration = 4000) {
+      toastEl.textContent = msg;
+      toastEl.style.display = 'block';
+      setTimeout(() => { toastEl.style.display = 'none'; }, duration);
+    }
+
+    // Supabase REST helper
+    async function supabasePost(table, data) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || `HTTP ${res.status}`);
+      }
+      // return=minimal → corpo vazio (201/204). Não chamar res.json() (estouraria).
+      return true;
+    }
+
+    // Fetch count (using HEAD + content-range)
+    async function fetchCount() {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/beta_testers?select=id`, {
+          method: 'HEAD',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Prefer': 'count=exact'
+          }
+        });
+        const range = res.headers.get('content-range');
+        if (range) {
+          const total = range.split('/')[1];
+          if (total && total !== '*' && parseInt(total) > 0) {
+            counterEl.innerHTML = `<strong>${total}</strong> pessoas já se cadastraram`;
+          }
+        }
+      } catch (e) { /* silent */ }
+    }
+
+    // Submit
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim().toLowerCase();
+
+      if (!name || !email) return;
+
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
+
+      try {
+        await supabasePost('beta_testers', { name, email });
+        formCard.style.display = 'none';
+        successCard.style.display = 'block';
+        document.getElementById('confirmedEmail').textContent = email;
+        fetchCount();
+      } catch (err) {
+        if (err.message && err.message.includes('duplicate')) {
+          showToast('Este e-mail já está cadastrado! 👍');
+          formCard.style.display = 'none';
+          successCard.style.display = 'block';
+          document.getElementById('confirmedEmail').textContent = email;
+        } else {
+          showToast('Erro ao cadastrar. Tente novamente.');
+          console.error(err);
+        }
+      } finally {
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Init
+    fetchCount();
+  </script>
+</body>
+</html>
