@@ -146,48 +146,40 @@
     .form-card {
       width: 100%; padding: 28px; border-radius: var(--radius);
       background: #FFFFFF;
-      border: 1px solid rgba(107, 92, 231, 0.15);
       box-shadow: 0 4px 24px rgba(59, 24, 195, 0.08);
       animation: fadeInUp 0.6s ease 0.5s both;
       position: relative;
-      overflow: hidden;
     }
 
-    /* BorderBeam effect (Magic UI style) */
-    .form-card::before,
-    .form-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      pointer-events: none;
+    /* BorderBeam wrapper (Magic UI style) */
+    .border-beam-wrap {
+      position: relative;
+      width: 100%;
+      padding: 2px;
+      border-radius: calc(var(--radius) + 2px);
+      overflow: hidden;
+      animation: fadeInUp 0.6s ease 0.5s both;
     }
-    .form-card::before {
-      inset: -2px;
+    .border-beam-wrap .beam-spinner {
+      position: absolute;
+      inset: -50%;
       background: conic-gradient(
-        from var(--beam-angle, 0deg),
+        from 0deg,
         transparent 0%,
-        transparent 75%,
-        var(--accent) 85%,
-        var(--primary) 92%,
+        transparent 70%,
+        #6C5CE7 80%,
+        #3B18C3 90%,
         transparent 100%
       );
-      animation: beamRotate 3s linear infinite;
-      z-index: -1;
+      animation: spinBeam 3s linear infinite;
     }
-    .form-card::after {
-      inset: 0;
-      background: #FFFFFF;
-      border-radius: calc(var(--radius) - 1px);
-      z-index: -1;
+    .border-beam-wrap .form-card {
+      position: relative;
+      z-index: 1;
+      animation: none;
     }
-    @property --beam-angle {
-      syntax: '<angle>';
-      initial-value: 0deg;
-      inherits: false;
-    }
-    @keyframes beamRotate {
-      to { --beam-angle: 360deg; }
+    @keyframes spinBeam {
+      to { transform: rotate(360deg); }
     }
 
     .form-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; text-align: center; }
@@ -351,7 +343,9 @@
     </div>
 
     <!-- Form -->
-    <div class="form-card" id="formCard">
+    <div class="border-beam-wrap">
+      <div class="beam-spinner"></div>
+      <div class="form-card" id="formCard">
       <div class="form-title">Cadastre-se para o Beta</div>
       <form id="betaForm" autocomplete="on">
         <div class="input-group">
@@ -368,6 +362,7 @@
           <div class="spinner"></div>
         </button>
       </form>
+      </div>
     </div>
 
     <!-- Success -->
